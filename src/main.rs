@@ -12,15 +12,13 @@ fn main() -> Result<(), eframe::Error> {
 
 // #[derive(Default)]
 struct MyApp {
-    label: String,
-    value: f32,
+    circle_pos: Vec<egui::Pos2>,
 }
 
 impl Default for MyApp {
     fn default() -> Self {
         Self {
-            label: "blah".to_string(),
-            value: 5.0,
+            circle_pos: Vec::new(),
         }
     }
 }
@@ -43,11 +41,23 @@ impl eframe::App for MyApp {
             
             let painter = ui.painter();
             let pointer_state = ui.input(|i| i.pointer.any_down());
+            // self.circle_pos.x = pointer_pos.unwrap_or_default().x;
+            // self.circle_pos.y = pointer_pos.unwrap_or_default().y;
+            // painter.circle(self.circle_pos, 10.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED));
             if pointer_state {
-                painter.circle(egui::Pos2 { x: pointer_pos.unwrap_or_default().x, y: pointer_pos.unwrap_or_default().y }, 10.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED))
-            } else {
-                painter.circle(egui::Pos2 { x: 10.0, y: 10.0 }, 10.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED))
+                if let Some(pos) = pointer_pos {
+                    self.circle_pos.push(pos);
+                }
             }
+            for pos in &self.circle_pos {
+                painter.circle(*pos, 15.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED));
+            }
+
+            // else {
+            //     painter.circle(egui::Pos2 { x: 100.0, y: 100.0 }, 10.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED));
+            // };
+            // painter.circle(egui::Pos2 { x: pointer_pos.unwrap_or_default().x, y: pointer_pos.unwrap_or_default().y }, 10.0, egui::Color32::RED, egui::Stroke::new(2.0,Color32::RED))
+
         });
     }
 }

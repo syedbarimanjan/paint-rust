@@ -1,4 +1,4 @@
-use eframe::egui::{self, Color32, Painter};
+use eframe::egui::{self, Color32};
 
 
 fn main() -> Result<(), eframe::Error> {
